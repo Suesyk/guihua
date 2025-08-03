@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专注时间统计系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        header {
+            padding: 24px 32px;
+            border-bottom: 1px solid #334155;
+            position: relative;
+            background: rgba(15, 23, 42, 0.7);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .header-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #f8fafc;
+        }
+        
+        .total-hours {
+            font-size: 40px;
+            font-weight: 800;
+            color: #60a5fa;
+            margin: 8px 0 16px;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.4);
+        }
+        
+        .timer-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 12px;
+            margin-left: 20px;
+            min-width: 320px;
+        }
+        
+        .timer-settings {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .timer-setting {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+        
+        .timer-setting label {
+            margin-right: 8px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        
+        .timer-setting input {
+            width: 60px;
+            padding: 8px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            border-radius: 6px;
+            color: #f1f5f9;
+            text-align: center;
+        }
+        
+        .timer-mode {
+            display: flex;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-left: auto;
+        }
+        
+        .mode-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .mode-btn.active {
+            background: #60a5fa;
+            color: #0f172a;
+            font-weight: 600;
+        }
+        
+        .timer-display {
+            font-size: 40px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: #60a5fa;
+            margin: 10px 0 20px;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+        }
+        
+        .timer-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .timer-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 100px;
+            justify-content: center;
+        }
+        
+        .timer-btn i {
+            font-size: 18px;
+        }
+        
+        .start-btn {
+            background: #10b981;
+            color: #064e3b;
+        }
+        
+        .start-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+        
+        .pause-btn {
+            background: #f59e0b;
+            color: #78350f;
+        }
+        
+        .pause-btn:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+        }
+        
+        .end-btn {
+            background: #8b5cf6;
+            color: #4c1d95;
+        }
+        
+        .end-btn:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        }
+        
+        .reset-btn {
+            background: #ef4444;
+            color: #7f1d1d;
+        }
+        
+        .reset-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            padding: 32px;
+        }
+        
+        .section {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: #60a5fa;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 10px;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .stat-title {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+        
+        .streak-info {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 10px;
+            font-size: 14px;
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .streak-info i {
+            color: #fbbf24;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+        }
+        
+        .calendar-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            text-align: center;
+            font-weight: 600;
+            color: #60a5fa;
+            margin-bottom: 10px;
+        }
+        
+        .calendar-day {
+            height: 70px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .calendar-day:hover {
+            transform: translateY(-3px);
+            background: rgba(45, 55, 72, 0.6);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .calendar-day.empty {
+            background: transparent;
+            border: none;
+        }
+        
+        .day-number {
+            font-size: 14px;
+            font-weight: 600;
+            color: #f8fafc;
+        }
+        
+        .day-hours {
+            font-size: 14px;
+            color: #60a5fa;
+            margin-top: 4px;
+        }
+        
+        .day-tasks {
+            font-size: 14px;
+            color: #60a5fa;
+            margin: 5px 0;
+        }
+        
+        .calendar-day.active {
+            background: rgba(30, 64, 175, 0.3);
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+        
+        .month-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .nav-btn {
+            background: rgba(30, 41, 59, 0.6);
+            border: none;
+            color: #94a3b8;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: #60a5fa;
+            color: #0f172a;
+        }
+        
+        .current-month {
+            font-size: 18px;
+            font-weight: 600;
+            color: #60a5fa;
+        }
+        
+        .strength-indicator {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .strength-bar {
+            height: 100%;
+            background: linear-gradient(to right, #60a5fa, #3b82f6);
+            border-radius: 2px;
+        }
+        
+        .task-container {
+            margin-top: 20px;
+        }
+        
+        .task-input {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .task-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px 0 0 8px;
+            background: rgba(30, 41, 59, 0.8);
+            color: #f1f5f9;
+            font-size: 16px;
+        }
+        
+        .task-input input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5);
+        }
+        
+        .task-input button {
+            background: #60a5fa;
+            color: #0f172a;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 8px 8px 0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .task-input button:hover {
+            background: #3b82f6;
+        }
+        
+        .task-list {
+            list-style: none;
+            max-height: 300px;
+            overflow-y: auto;
+            min-height: 150px;
+            position: relative;
+        }
+        
+        .task-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .task-list::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.4);
+            border-radius: 10px;
+        }
+        
+        .task-list::-webkit-scrollbar-thumb {
+            background: #60a5fa;
+            border-radius: 10px;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .task-item:hover {
+            background: rgba(45, 55, 72, 0.6);
+        }
+        
+        .task-checkbox {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .task-checkbox:hover {
+            border-color: #60a5fa;
+        }
+        
+        .task-checkbox.checked {
+            background: #60a5fa;
+            border-color: #60a5fa;
+        }
+        
+        .task-checkbox.checked::after {
+            content: "✓";
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .task-text {
+            flex: 1;
+            font-size: 16px;
+        }
+        
+        .task-text.completed {
+            text-decoration: line-through;
+            color: #60a5fa;
+        }
+        
+        .task-date {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-right: 12px;
+            min-width: 70px;
+        }
+        
+        .task-delete {
+            color: #f87171;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 18px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .task-delete:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: #60a5fa;
+            color: #0f172a;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.5s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .system-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0 32px 20px;
+        }
+        
+        .system-btn {
+            padding: 8px 16px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        
+        .system-btn:hover {
+            background: #60a5fa;
+            color: #0f172a;
+        }
+        
+        .task-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .task-stat-item {
+            text-align: center;
+        }
+        
+        .task-stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+        
+        .task-stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #94a3b8;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #60a5fa;
+        }
+        
+        .task-group {
+            margin-bottom: 20px;
+        }
+        
+        .task-group-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #334155;
+            margin-bottom: 10px;
+            color: #60a5fa;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .task-group-header i {
+            margin-right: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .task-group-header.collapsed i {
+            transform: rotate(-90deg);
+        }
+        
+        .task-group-items {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .task-group-header.collapsed + .task-group-items {
+            display: none;
+        }
+        
+        /* 每日固定任务样式 */
+        .daily-tasks-section {
+            margin: 0 32px 32px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        
+        .daily-task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .daily-task-item:hover {
+            background: rgba(45, 55, 72, 0.6);
+        }
+        
+        .daily-task-item.completed {
+            border-left-color: #10b981;
+        }
+        
+        .daily-task-checkbox {
+            margin-right: 15px;
+            width: 22px;
+            height: 22px;
+        }
+        
+        .daily-task-text {
+            flex: 1;
+            font-size: 16px;
+        }
+        
+        .daily-task-item.completed .daily-task-text {
+            text-decoration: line-through;
+            color: #60a5fa;
+        }
+        
+        .daily-task-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 10px;
+        }
+        
+        .daily-task-stat {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .daily-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+        
+        .daily-stat-label {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        
+        /* 考研倒计时样式 */
+        .exam-countdown {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .exam-countdown h3 {
+            font-size: 18px;
+            color: #60a5fa;
+            margin-bottom: 15px;
+        }
+        
+        #exam-days {
+            font-size: 36px;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+        
+        @media (max-width: 900px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            header {
+                flex-direction: column;
+            }
+            
+            .timer-container {
+                margin: 20px 0 0 0;
+                width: 100%;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .timer-display {
+                font-size: 32px;
+            }
+            
+            .total-hours {
+                font-size: 32px;
+            }
+            
+            .task-stat-value {
+                font-size: 28px;
+            }
+            
+            .timer-controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .calendar-day {
+                height: 60px;
+            }
+            
+            .daily-tasks-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>专注时间统计</h1>
+                <div class="total-hours" id="total-hours">0.0 小时</div>
+            </div>
+            
+            <div class="timer-container">
+                <div class="timer-settings">
+                    <div class="timer-setting">
+                        <label for="minutes">分钟:</label>
+                        <input type="number" id="minutes" min="1" max="120" value="25">
+                    </div>
+                    <div class="timer-setting">
+                        <label for="seconds">秒钟:</label>
+                        <input type="number" id="seconds" min="0" max="59" value="0">
+                    </div>
+                    <div class="timer-mode">
+                        <button class="mode-btn active" data-mode="countdown">倒计时</button>
+                        <button class="mode-btn" data-mode="stopwatch">正计时</button>
+                    </div>
+                </div>
+                
+                <div class="timer-display" id="timer-display">25:00</div>
+                
+                <div class="timer-controls">
+                    <button class="timer-btn start-btn" id="start-btn">
+                        <i class="fas fa-play"></i> 开始
+                    </button>
+                    <button class="timer-btn pause-btn" id="pause-btn">
+                        <i class="fas fa-pause"></i> 暂停
+                    </button>
+                    <button class="timer-btn end-btn" id="end-btn">
+                        <i class="fas fa-stop"></i> 结束
+                    </button>
+                    <button class="timer-btn reset-btn" id="timer-reset-btn">
+                        <i class="fas fa-redo"></i> 重置
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <div class="dashboard">
+            <!-- 左侧：日历视图 -->
+            <div class="section">
+                <div class="month-navigation">
+                    <button class="nav-btn" id="prev-month">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="current-month" id="current-month">2025年8月</div>
+                    <button class="nav-btn" id="next-month">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <div class="calendar-header">
+                    <div>日</div>
+                    <div>一</div>
+                    <div>二</div>
+                    <div>三</div>
+                    <div>四</div>
+                    <div>五</div>
+                    <div>六</div>
+                </div>
+                
+                <div class="calendar-grid" id="calendar-grid">
+                    <!-- 日历格子将通过JS动态生成 -->
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-title">打卡总览</div>
+                        <div class="stat-value" id="streak-value">连续打卡：0天</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">本月专注时间</div>
+                        <div class="stat-value" id="month-hours">0.0小时</div>
+                    </div>
+                </div>
+                
+                <div class="streak-info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>只有当您一天中学习超过1小时，才会计入连续学习天数。</div>
+                </div>
+            </div>
+            
+            <!-- 右侧：任务待办区域 -->
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-tasks"></i> 任务待办</h2>
+                
+                <div class="task-container">
+                    <div class="task-input">
+                        <input type="text" id="new-task" placeholder="添加新任务...">
+                        <button id="add-task"><i class="fas fa-plus"></i></button>
+                    </div>
+                    
+                    <ul class="task-list" id="task-list">
+                        <div class="empty-state" id="task-empty">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>暂无任务，添加新任务开始吧！</p>
+                        </div>
+                    </ul>
+                    
+                    <div class="task-stats">
+                        <div class="task-stat-item">
+                            <div class="task-stat-value" id="total-tasks">0</div>
+                            <div class="task-stat-label">总任务</div>
+                        </div>
+                        <div class="task-stat-item">
+                            <div class="task-stat-value" id="completed-tasks">0</div>
+                            <div class="task-stat-label">已完成</div>
+                        </div>
+                        <div class="task-stat-item">
+                            <div class="task-stat-value" id="pending-tasks">0</div>
+                            <div class="task-stat-label">待完成</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 每日固定任务 + 考研倒计时 -->
+        <div class="section daily-tasks-section">
+            <div>
+                <h2 class="section-title"><i class="fas fa-list-check"></i> 每日固定任务</h2>
+                <div id="daily-tasks-container">
+                    <!-- 每日固定任务将通过JS动态生成 -->
+                </div>
+                <div class="daily-task-stats">
+                    <div class="daily-task-stat">
+                        <div class="daily-stat-value" id="daily-total">0</div>
+                        <div class="daily-stat-label">总任务</div>
+                    </div>
+                    <div class="daily-task-stat">
+                        <div class="daily-stat-value" id="daily-completed">0</div>
+                        <div class="daily-stat-label">已完成</div>
+                    </div>
+                    <div class="daily-task-stat">
+                        <div class="daily-stat-value" id="daily-pending">0</div>
+                        <div class="daily-stat-label">待完成</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 考研倒计时区域 -->
+            <div class="exam-countdown">
+                <h3>考研倒计时</h3>
+                <div id="exam-days">计算中...</div>
+            </div>
+        </div>
+        
+        <div class="system-actions">
+            <button class="system-btn" id="export-btn">
+                <i class="fas fa-download"></i> 导出数据
+            </button>
+            <button class="system-btn" id="reset-data-btn">
+                <i class="fas fa-trash"></i> 重置数据
+            </button>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">任务已添加！</div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 数据存储键名
+            const STORAGE_KEYS = {
+                TASKS: 'focusTracker_tasks',
+                FOCUS_DATA: 'focusTracker_focusData',
+                TOTAL_HOURS: 'focusTracker_totalHours',
+                TIMER_SETTINGS: 'focusTracker_timerSettings',
+                DAILY_TASKS: 'focusTracker_dailyTasks',
+                DAILY_TASKS_DATE: 'focusTracker_dailyTasksDate'
+            };
+            
+            // 初始化数据
+            let tasks = JSON.parse(localStorage.getItem(STORAGE_KEYS.TASKS)) || [];
+            let focusData = JSON.parse(localStorage.getItem(STORAGE_KEYS.FOCUS_DATA)) || {};
+            let totalHours = parseFloat(localStorage.getItem(STORAGE_KEYS.TOTAL_HOURS)) || 0;
+            let timerSettings = JSON.parse(localStorage.getItem(STORAGE_KEYS.TIMER_SETTINGS)) || {
+                minutes: 25,
+                seconds: 0,
+                isCountdown: true
+            };
+            
+            // 每日固定任务（新增专业课知识点背诵）
+            const DEFAULT_DAILY_TASKS = [
+                { id: 1, text: '英语单词背诵', completed: false },
+                { id: 2, text: '政治知识点背诵', completed: false },
+                { id: 3, text: '数学知识点背诵', completed: false },
+                { id: 4, text: '英语真题练习', completed: false },
+                { id: 5, text: '专业课知识点背诵', completed: false }
+            ];
+            
+            // 获取存储的每日任务和日期
+            let dailyTasks = JSON.parse(localStorage.getItem(STORAGE_KEYS.DAILY_TASKS)) || DEFAULT_DAILY_TASKS;
+            let lastDailyTaskDate = localStorage.getItem(STORAGE_KEYS.DAILY_TASKS_DATE) || '';
+            
+            // 检查是否需要重置每日任务（新的一天）
+            const today = new Date().toISOString().split('T')[0];
+            if (lastDailyTaskDate !== today) {
+                // 重置每日任务为未完成状态
+                dailyTasks = DEFAULT_DAILY_TASKS.map(task => ({
+                    ...task,
+                    completed: false
+                }));
+                localStorage.setItem(STORAGE_KEYS.DAILY_TASKS, JSON.stringify(dailyTasks));
+                localStorage.setItem(STORAGE_KEYS.DAILY_TASKS_DATE, today);
+            }
+            
+            // 设置当前月份
+            const now = new Date();
+            let currentYear = now.getFullYear();
+            let currentMonth = now.getMonth() + 1;
+            
+            // 更新总专注时间显示
+            const totalHoursElement = document.getElementById('total-hours');
+            totalHoursElement.textContent = totalHours.toFixed(1) + ' 小时';
+            
+            // 更新月份显示
+            const monthNames = ["一月", "二月", "三月", "四月", "五月", "六月", 
+                               "七月", "八月", "九月", "十月", "十一月", "十二月"];
+            document.getElementById('current-month').textContent = `${currentYear}年${monthNames[currentMonth-1]}`;
+            
+            // 生成日历格子
+            function generateCalendar(year, month) {
+                const calendarGrid = document.getElementById('calendar-grid');
+                calendarGrid.innerHTML = '';
+                
+                // 获取当月第一天
+                const firstDay = new Date(year, month - 1, 1);
+                // 获取当月最后一天
+                const lastDay = new Date(year, month, 0);
+                // 获取当月天数
+                const daysInMonth = lastDay.getDate();
+                // 获取第一天是星期几（0代表星期日，1代表星期一，以此类推）
+                const firstDayOfWeek = firstDay.getDay();
+                
+                // 添加上个月的空格
+                for (let i = 0; i < firstDayOfWeek; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'calendar-day empty';
+                    calendarGrid.appendChild(emptyDay);
+                }
+                
+                // 添加当月的日期格子
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                    const hours = focusData[dateStr]?.hours || 0;
+                    const tasksCompleted = focusData[dateStr]?.tasksCompleted || 0;
+                    const isToday = new Date().toISOString().split('T')[0] === dateStr;
+                    
+                    const dayElement = document.createElement('div');
+                    dayElement.className = `calendar-day ${isToday ? 'active' : ''}`;
+                    
+                    dayElement.innerHTML = `
+                        <div class="day-number">${day}</div>
+                        <div class="day-hours">${hours.toFixed(1)}h</div>
+                        <div class="day-tasks">${tasksCompleted} 任务</div>
+                        <div class="strength-indicator">
+                            <div class="strength-bar" style="width: ${Math.min(hours / 8 * 100, 100)}%"></div>
+                        </div>
+                    `;
+                    
+                    calendarGrid.appendChild(dayElement);
+                }
+            }
+            
+            // 计算连续打卡天数
+            function calculateStreak() {
+                const today = new Date();
+                let streak = 0;
+                
+                // 从今天开始向前检查
+                for (let i = 0; i < 30; i++) {
+                    const date = new Date();
+                    date.setDate(today.getDate() - i);
+                    const dateStr = date.toISOString().split('T')[0];
+                    
+                    if (focusData[dateStr] && focusData[dateStr].hours >= 1) {
+                        streak++;
+                    } else {
+                        break;
+                    }
+                }
+                
+                return streak;
+            }
+            
+            // 计算本月专注时间
+            function calculateMonthHours() {
+                let monthHours = 0;
+                const year = currentYear;
+                const month = currentMonth;
+                
+                // 遍历本月所有天
+                for (let day = 1; day <= 31; day++) {
+                    const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                    
+                    if (focusData[dateStr]) {
+                        monthHours += focusData[dateStr].hours || 0;
+                    }
+                }
+                
+                return monthHours;
+            }
+            
+            // 更新统计数据
+            function updateStats() {
+                const streak = calculateStreak();
+                const monthHours = calculateMonthHours();
+                
+                document.getElementById('streak-value').textContent = `连续打卡：${streak}天`;
+                document.getElementById('month-hours').textContent = `${monthHours.toFixed(1)}小时`;
+            }
+            
+            // 初始生成日历
+            generateCalendar(currentYear, currentMonth);
+            updateStats();
+            
+            // 月份导航
+            document.getElementById('prev-month').addEventListener('click', function() {
+                currentMonth--;
+                if (currentMonth < 1) {
+                    currentMonth = 12;
+                    currentYear--;
+                }
+                document.getElementById('current-month').textContent = `${currentYear}年${monthNames[currentMonth-1]}`;
+                generateCalendar(currentYear, currentMonth);
+                updateStats();
+            });
+            
+            document.getElementById('next-month').addEventListener('click', function() {
+                currentMonth++;
+                if (currentMonth > 12) {
+                    currentMonth = 1;
+                    currentYear++;
+                }
+                document.getElementById('current-month').textContent = `${currentYear}年${monthNames[currentMonth-1]}`;
+                generateCalendar(currentYear, currentMonth);
+                updateStats();
+            });
+            
+            // 计时器功能
+            const timerDisplay = document.getElementById('timer-display');
+            const minutesInput = document.getElementById('minutes');
+            const secondsInput = document.getElementById('seconds');
+            const startBtn = document.getElementById('start-btn');
+            const pauseBtn = document.getElementById('pause-btn');
+            const endBtn = document.getElementById('end-btn');
+            const timerResetBtn = document.getElementById('timer-reset-btn');
+            const modeButtons = document.querySelectorAll('.mode-btn');
+            
+            let timer;
+            let minutes = timerSettings.minutes;
+            let seconds = timerSettings.seconds;
+            let isRunning = false;
+            let isCountdown = timerSettings.isCountdown;
+            let totalSeconds = 0;
+            let startTime = 0;
+            
+            // 初始化计时器设置
+            minutesInput.value = minutes;
+            secondsInput.value = seconds;
+            
+            // 设置当前模式
+            modeButtons.forEach(btn => {
+                if ((isCountdown && btn.dataset.mode === 'countdown') || 
+                    (!isCountdown && btn.dataset.mode === 'stopwatch')) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // 初始化计时器显示
+            updateTimerDisplay();
+            
+            // 监听模式切换按钮
+            modeButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    modeButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    isCountdown = this.dataset.mode === 'countdown';
+                    timerSettings.isCountdown = isCountdown;
+                    localStorage.setItem(STORAGE_KEYS.TIMER_SETTINGS, JSON.stringify(timerSettings));
+                    resetTimer();
+                });
+            });
+            
+            // 更新计时器显示
+            function updateTimerDisplay() {
+                if (isCountdown) {
+                    timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                } else {
+                    const min = Math.floor(totalSeconds / 60);
+                    const sec = totalSeconds % 60;
+                    timerDisplay.textContent = `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                }
+            }
+            
+            // 开始计时
+            function startTimer() {
+                if (isRunning) return;
+                
+                if (isCountdown) {
+                    minutes = parseInt(minutesInput.value) || 25;
+                    seconds = parseInt(secondsInput.value) || 0;
+                    
+                    // 保存计时器设置
+                    timerSettings.minutes = minutes;
+                    timerSettings.seconds = seconds;
+                    localStorage.setItem(STORAGE_KEYS.TIMER_SETTINGS, JSON.stringify(timerSettings));
+                } else {
+                    totalSeconds = 0;
+                }
+                
+                startTime = new Date();
+                isRunning = true;
+                
+                timer = setInterval(() => {
+                    if (isCountdown) {
+                        // 倒计时逻辑
+                        if (seconds === 0) {
+                            if (minutes === 0) {
+                                clearInterval(timer);
+                                isRunning = false;
+                                showNotification('专注时间结束！');
+                                recordFocusSession();
+                                return;
+                            }
+                            minutes--;
+                            seconds = 59;
+                        } else {
+                            seconds--;
+                        }
+                    } else {
+                        // 正计时逻辑
+                        totalSeconds++;
+                    }
+                    
+                    updateTimerDisplay();
+                }, 1000);
+            }
+            
+            // 记录专注时间段
+            function recordFocusSession(recordedHours = null) {
+                // 如果没有传入时间，则根据模式计算
+                if (recordedHours === null) {
+                    if (isCountdown) {
+                        // 倒计时模式：记录设定的时间（分钟+秒 → 小时）
+                        const setMinutes = parseInt(minutesInput.value) || 25;
+                        const setSeconds = parseInt(secondsInput.value) || 0;
+                        const totalMinutes = setMinutes + setSeconds / 60;
+                        recordedHours = totalMinutes / 60;
+                    } else {
+                        // 正计时模式：记录实际经过的时间
+                        const durationMs = new Date() - startTime;
+                        const durationMinutes = durationMs / 1000 / 60;
+                        recordedHours = durationMinutes / 60;
+                    }
+                }
+                
+                // 更新总专注时间
+                totalHours += recordedHours;
+                totalHoursElement.textContent = totalHours.toFixed(1) + ' 小时';
+                localStorage.setItem(STORAGE_KEYS.TOTAL_HOURS, totalHours);
+                
+                // 记录专注日期
+                const today = new Date().toISOString().split('T')[0];
+                
+                if (!focusData[today]) {
+                    focusData[today] = {
+                        hours: 0,
+                        tasksCompleted: 0
+                    };
+                }
+                
+                focusData[today].hours += recordedHours;
+                localStorage.setItem(STORAGE_KEYS.FOCUS_DATA, JSON.stringify(focusData));
+                
+                // 更新所有视图
+                generateCalendar(currentYear, currentMonth);
+                updateStats();
+            }
+            
+            // 暂停计时
+            function pauseTimer() {
+                clearInterval(timer);
+                isRunning = false;
+            }
+            
+            // 结束计时并记录
+            function endTimer() {
+                clearInterval(timer);
+                isRunning = false;
+                
+                if (startTime) {
+                    let recordedHours = 0;
+                    if (isCountdown) {
+                        // 倒计时模式：记录设定的完整时间
+                        const setMinutes = parseInt(minutesInput.value) || 25;
+                        const setSeconds = parseInt(secondsInput.value) || 0;
+                        const totalMinutes = setMinutes + setSeconds / 60;
+                        recordedHours = totalMinutes / 60;
+                    } else {
+                        // 正计时模式：记录实际经过的时间
+                        const durationMs = new Date() - startTime;
+                        const durationMinutes = durationMs / 1000 / 60;
+                        recordedHours = durationMinutes / 60;
+                    }
+                    recordFocusSession(recordedHours);
+                }
+                
+                resetTimer();
+            }
+            
+            // 重置计时器
+            function resetTimer() {
+                clearInterval(timer);
+                isRunning = false;
+                
+                if (isCountdown) {
+                    minutes = parseInt(minutesInput.value) || 25;
+                    seconds = parseInt(secondsInput.value) || 0;
+                } else {
+                    totalSeconds = 0;
+                }
+                
+                updateTimerDisplay();
+            }
+            
+            // 计时器事件监听
+            startBtn.addEventListener('click', startTimer);
+            pauseBtn.addEventListener('click', pauseTimer);
+            endBtn.addEventListener('click', endTimer);
+            timerResetBtn.addEventListener('click', resetTimer);
+            
+            // 输入验证
+            minutesInput.addEventListener('change', function() {
+                let val = parseInt(this.value) || 25;
+                if (val < 1) val = 1;
+                if (val > 120) val = 120;
+                this.value = val;
+                minutes = val;
+                updateTimerDisplay();
+            });
+            
+            secondsInput.addEventListener('change', function() {
+                let val = parseInt(this.value) || 0;
+                if (val < 0) val = 0;
+                if (val > 59) val = 59;
+                this.value = val;
+                seconds = val;
+                updateTimerDisplay();
+            });
+            
+            // 任务管理功能
+            const taskList = document.getElementById('task-list');
+            const newTaskInput = document.getElementById('new-task');
+            const addTaskBtn = document.getElementById('add-task');
+            const notification = document.getElementById('notification');
+            const totalTasksElement = document.getElementById('total-tasks');
+            const completedTasksElement = document.getElementById('completed-tasks');
+            const pendingTasksElement = document.getElementById('pending-tasks');
+            const taskEmptyElement = document.getElementById('task-empty');
+            
+            // 更新任务统计
+            function updateTaskStats() {
+                const total = tasks.length;
+                const completed = tasks.filter(task => task.completed).length;
+                const pending = total - completed;
+                
+                totalTasksElement.textContent = total;
+                completedTasksElement.textContent = completed;
+                pendingTasksElement.textContent = pending;
+                
+                // 显示/隐藏空状态
+                if (total === 0) {
+                    taskEmptyElement.style.display = 'block';
+                } else {
+                    taskEmptyElement.style.display = 'none';
+                }
+            }
+            
+            // 获取日期标签
+            function getDateLabel(dateStr) {
+                const today = new Date().toISOString().split('T')[0];
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayStr = yesterday.toISOString().split('T')[0];
+                
+                if (dateStr === today) return '今天';
+                if (dateStr === yesterdayStr) return '昨天';
+                
+                // 更早的日期显示格式化日期
+                const date = new Date(dateStr);
+                return `${date.getMonth() + 1}月${date.getDate()}日`;
+            }
+            
+            // 渲染任务列表（按日期分组）
+            function renderTasks() {
+                taskList.innerHTML = '';
+                
+                if (tasks.length === 0) {
+                    taskList.appendChild(taskEmptyElement);
+                    taskEmptyElement.style.display = 'block';
+                    updateTaskStats();
+                    return;
+                }
+                
+                taskEmptyElement.style.display = 'none';
+                
+                // 按日期分组
+                const tasksByDate = {};
+                tasks.forEach(task => {
+                    if (!tasksByDate[task.date]) {
+                        tasksByDate[task.date] = [];
+                    }
+                    tasksByDate[task.date].push(task);
+                });
+                
+                // 按日期排序（最新的在前）
+                const sortedDates = Object.keys(tasksByDate).sort((a, b) => new Date(b) - new Date(a));
+                
+                // 渲染每个日期的任务组
+                sortedDates.forEach(date => {
+                    const dateTasks = tasksByDate[date];
+                    const dateLabel = getDateLabel(date);
+                    
+                    // 创建任务组容器
+                    const groupContainer = document.createElement('div');
+                    groupContainer.className = 'task-group';
+                    
+                    // 任务组标题
+                    const groupHeader = document.createElement('div');
+                    groupHeader.className = 'task-group-header';
+                    groupHeader.innerHTML = `
+                        <i class="fas fa-chevron-down"></i>
+                        <span>${dateLabel}</span>
+                    `;
+                    
+                    // 任务项容器
+                    const groupItems = document.createElement('div');
+                    groupItems.className = 'task-group-items';
+                    
+                    // 添加任务项
+                    dateTasks.forEach(task => {
+                        const taskItem = document.createElement('li');
+                        taskItem.className = 'task-item';
+                        
+                        taskItem.innerHTML = `
+                            <div class="task-checkbox ${task.completed ? 'checked' : ''}" data-id="${task.id}"></div>
+                            <div class="task-text ${task.completed ? 'completed' : ''}">${task.text}</div>
+                            <div class="task-date">${dateLabel}</div>
+                            <div class="task-delete" data-id="${task.id}">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                        `;
+                        
+                        groupItems.appendChild(taskItem);
+                    });
+                    
+                    // 将标题和任务项添加到容器
+                    groupContainer.appendChild(groupHeader);
+                    groupContainer.appendChild(groupItems);
+                    taskList.appendChild(groupContainer);
+                    
+                    // 添加折叠/展开事件
+                    groupHeader.addEventListener('click', function() {
+                        groupHeader.classList.toggle('collapsed');
+                        groupItems.style.display = groupHeader.classList.contains('collapsed') ? 'none' : 'block';
+                    });
+                });
+                
+                // 更新任务统计
+                updateTaskStats();
+                
+                // 添加事件监听器
+                document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('click', toggleTask);
+                });
+                
+                document.querySelectorAll('.task-delete').forEach(btn => {
+                    btn.addEventListener('click', deleteTask);
+                });
+            }
+            
+            // 添加新任务
+            function addTask() {
+                const text = newTaskInput.value.trim();
+                if (text) {
+                    const today = new Date().toISOString().split('T')[0];
+                    
+                    const newTask = {
+                        id: Date.now(),
+                        text: text,
+                        completed: false,
+                        date: today
+                    };
+                    
+                    tasks.push(newTask);
+                    saveTasks();
+                    renderTasks();
+                    newTaskInput.value = '';
+                    
+                    // 显示通知
+                    showNotification('任务已添加！');
+                }
+            }
+            
+            // 切换任务状态
+            function toggleTask(e) {
+                const taskId = parseInt(e.target.dataset.id);
+                const task = tasks.find(t => t.id === taskId);
+                
+                if (task) {
+                    task.completed = !task.completed;
+                    saveTasks();
+                    renderTasks();
+                    
+                    // 更新专注数据中的任务计数
+                    const today = new Date().toISOString().split('T')[0];
+                    
+                    if (!focusData[today]) {
+                        focusData[today] = {
+                            hours: 0,
+                            tasksCompleted: 0
+                        };
+                    }
+                    
+                    if (task.completed) {
+                        focusData[today].tasksCompleted += 1;
+                    } else {
+                        focusData[today].tasksCompleted = Math.max(0, focusData[today].tasksCompleted - 1);
+                    }
+                    
+                    localStorage.setItem(STORAGE_KEYS.FOCUS_DATA, JSON.stringify(focusData));
+                    
+                    // 更新日历视图
+                    generateCalendar(currentYear, currentMonth);
+                    updateStats();
+                    
+                    // 显示通知
+                    showNotification(task.completed ? '任务已完成！' : '任务已标记为未完成');
+                }
+            }
+            
+            // 删除任务
+            function deleteTask(e) {
+                const taskId = parseInt(e.currentTarget.dataset.id);
+                const taskIndex = tasks.findIndex(t => t.id === taskId);
+                
+                if (taskIndex !== -1) {
+                    const task = tasks[taskIndex];
+                    
+                    // 如果任务是已完成的，从统计中减去
+                    if (task.completed) {
+                        const today = new Date().toISOString().split('T')[0];
+                        
+                        if (focusData[today] && focusData[today].tasksCompleted > 0) {
+                            focusData[today].tasksCompleted -= 1;
+                            localStorage.setItem(STORAGE_KEYS.FOCUS_DATA, JSON.stringify(focusData));
+                        }
+                    }
+                    
+                    tasks.splice(taskIndex, 1);
+                    saveTasks();
+                    renderTasks();
+                    
+                    // 更新日历视图
+                    generateCalendar(currentYear, currentMonth);
+                    updateStats();
+                    
+                    // 显示通知
+                    showNotification('任务已删除！');
+                }
+            }
+            
+            // 保存任务到本地存储
+            function saveTasks() {
+                localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(tasks));
+            }
+            
+            // 每日固定任务功能
+            function renderDailyTasks() {
+                const container = document.getElementById('daily-tasks-container');
+                container.innerHTML = '';
+                
+                dailyTasks.forEach(task => {
+                    const taskElement = document.createElement('div');
+                    taskElement.className = `daily-task-item ${task.completed ? 'completed' : ''}`;
+                    
+                    taskElement.innerHTML = `
+                        <div class="task-checkbox daily-task-checkbox ${task.completed ? 'checked' : ''}" data-id="${task.id}"></div>
+                        <div class="daily-task-text">${task.text}</div>
+                    `;
+                    
+                    container.appendChild(taskElement);
+                });
+                
+                // 更新每日任务统计
+                updateDailyTaskStats();
+                
+                // 添加事件监听器
+                document.querySelectorAll('.daily-task-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('click', toggleDailyTask);
+                });
+            }
+            
+            // 更新每日任务统计
+            function updateDailyTaskStats() {
+                const total = dailyTasks.length;
+                const completed = dailyTasks.filter(task => task.completed).length;
+                const pending = total - completed;
+                
+                document.getElementById('daily-total').textContent = total;
+                document.getElementById('daily-completed').textContent = completed;
+                document.getElementById('daily-pending').textContent = pending;
+                
+                // 更新今日任务完成数统计
+                const today = new Date().toISOString().split('T')[0];
+                if (!focusData[today]) {
+                    focusData[today] = {
+                        hours: 0,
+                        tasksCompleted: 0
+                    };
+                }
+                focusData[today].tasksCompleted = completed;
+                localStorage.setItem(STORAGE_KEYS.FOCUS_DATA, JSON.stringify(focusData));
+                
+                // 更新日历视图
+                generateCalendar(currentYear, currentMonth);
+            }
+            
+            // 切换每日任务状态
+            function toggleDailyTask(e) {
+                const taskId = parseInt(e.target.dataset.id);
+                const task = dailyTasks.find(t => t.id === taskId);
+                
+                if (task) {
+                    task.completed = !task.completed;
+                    localStorage.setItem(STORAGE_KEYS.DAILY_TASKS, JSON.stringify(dailyTasks));
+                    renderDailyTasks();
+                    
+                    // 显示通知
+                    showNotification(task.completed ? '任务已完成！' : '任务已标记为未完成');
+                }
+            }
+            
+            // 考研倒计时计算（2025年12月20日）
+            const examDate = new Date(2025, 11, 20); // 月份0=1月，11=12月
+            function updateExamCountdown() {
+                const today = new Date();
+                const diff = examDate - today;
+                if (diff <= 0) {
+                    document.getElementById('exam-days').textContent = '考试进行中！';
+                    return;
+                }
+                const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+                document.getElementById('exam-days').textContent = `${daysLeft} 天`;
+            }
+            
+            // 显示通知
+            function showNotification(message) {
+                notification.textContent = message;
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 2000);
+            }
+            
+            // 重置数据按钮
+            document.getElementById('reset-data-btn').addEventListener('click', function() {
+                if (confirm('确定要重置所有数据吗？此操作不可撤销！')) {
+                    localStorage.clear();
+                    // 重新加载页面
+                    location.reload();
+                }
+            });
+            
+            // 导出数据
+            document.getElementById('export-btn').addEventListener('click', function() {
+                const data = {
+                    tasks: tasks,
+                    focusData: focusData,
+                    totalHours: totalHours,
+                    dailyTasks: dailyTasks,
+                    lastDailyTaskDate: lastDailyTaskDate
+                };
+                
+                const dataStr = JSON.stringify(data, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = 'focus-tracker-data.json';
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+            });
+            
+            // 初始渲染
+            renderTasks();
+            renderDailyTasks();
+            updateExamCountdown(); // 初始化考研倒计时
+            setInterval(updateExamCountdown, 1000 * 60 * 60 * 24); // 每天更新一次
+            
+            // 添加任务事件监听
+            addTaskBtn.addEventListener('click', addTask);
+            newTaskInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addTask();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
