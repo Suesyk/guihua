@@ -33,13 +33,27 @@
             background: linear-gradient(120deg, #1a2980, #26d0ce);
             color: white;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
         }
         
         header h1 {
             font-size: 2.8rem;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
         
         header p {
@@ -47,6 +61,7 @@
             max-width: 800px;
             margin: 0 auto;
             opacity: 0.9;
+            position: relative;
         }
         
         .subject-nav {
@@ -65,20 +80,41 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             gap: 8px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .subject-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(120deg, #1a2980, #26d0ce);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .subject-btn:hover::after {
+            width: 100%;
         }
         
         .subject-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            color: white;
         }
         
         .subject-btn.active {
             background: #1a2980;
             color: white;
+            box-shadow: 0 4px 15px rgba(26, 41, 128, 0.4);
         }
         
         .subject-section {
@@ -86,8 +122,9 @@
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
             display: none;
+            transition: all 0.4s ease;
         }
         
         .subject-section.active {
@@ -119,6 +156,19 @@
         .subject-header h2 {
             font-size: 2rem;
             color: #1a2980;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        .subject-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #1a2980, #26d0ce);
+            border-radius: 3px;
         }
         
         .phase-container {
@@ -126,59 +176,80 @@
             flex-wrap: wrap;
             gap: 25px;
             margin-bottom: 30px;
+            justify-content: center;
         }
         
         .phase-card {
             flex: 1;
             min-width: 280px;
+            max-width: 350px;
             background: #f8fbfe;
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             border-top: 4px solid #26d0ce;
+            display: flex;
+            flex-direction: column;
         }
         
         .phase-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
         }
         
         .phase-card h3 {
             color: #1a2980;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
             border-bottom: 2px dashed #d1e6fa;
             font-size: 1.4rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .phase-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: #26d0ce;
+            border-radius: 2px;
         }
         
         .resources-list {
             list-style-type: none;
+            flex: 1;
         }
         
         .resources-list li {
             padding: 12px 0;
-            border-bottom: 1px solid #edf2f7;
             display: flex;
             align-items: flex-start;
+            text-align: left;
         }
         
-        .resources-list li:last-child {
-            border-bottom: none;
+        .resources-list li > div {
+            flex: 1;
         }
         
         .resources-list li i {
             color: #26d0ce;
             margin-right: 10px;
             margin-top: 5px;
+            flex-shrink: 0;
         }
         
         .tips-card {
-            background: #e3f2fd;
+            background: linear-gradient(to right, #e3f2fd, #f0f8ff);
             border-radius: 12px;
             padding: 25px;
             border-left: 4px solid #1a2980;
             margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
         
         .tips-card h3 {
@@ -196,6 +267,8 @@
             font-size: 0.95rem;
             margin-top: 30px;
             border-top: 1px solid #eaeaea;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
         }
         
         @media (max-width: 768px) {
@@ -214,6 +287,18 @@
             
             .phase-card {
                 min-width: 100%;
+                max-width: 100%;
+            }
+            
+            .resources-list li {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .resources-list li i {
+                margin-right: 0;
+                margin-bottom: 8px;
             }
         }
     </style>
@@ -382,10 +467,10 @@
                             <i class="fas fa-book"></i>
                             <div>
                                 <strong>注意事项：</strong>马原、习思想难度高，先看课再做题
-史纲、思修、毛中特简单，直接看教材刷题
-马原->思修->史纲->毛中特->习思想
-马原各种原理需要重视
-听完课不要直接做题，回头再翻一下教材
+														 史纲、思修、毛中特简单，直接看教材刷题<br>
+                                                         马原->思修->史纲->毛中特->习思想<br>
+                                                         马原各种原理需要重视<br>
+                                                         听完课不要直接做题，回头再翻一下教材<br>
                             </div>
                         </li>
                         <li>
@@ -410,7 +495,7 @@
                             <div>
                                 <strong>习题集：</strong>《肖1000》题
 《徐涛优题库》
-“研力刷题”小程序
+"研力刷题"小程序
 真题
                             </div>
                         </li>
@@ -450,13 +535,12 @@
 ＋其他
                             </div>
                         </li>
-                        /li>
                         <li>
                             <i class="fas fa-bullhorn"></i>
                             <div>
                                 <strong>注意事项：</strong>《肖八》选择题题干选项考点等都要看。分析题看看就行，多看马原大题，判断考察角度	
 《肖四》分析题背熟背透。选择题做一遍45min，多关注时政内容。多注意答案的话术语料。25min一道大题
-“空卡”时政总结带背
+"空卡"时政总结带背
                             </div>
                         </li>
                     </ul>
@@ -494,6 +578,7 @@
 留意公式推倒、理解记忆为主
                             </div>
                         </li>
+                    </ul>
                 </div>
                 
                 <div class="phase-card">
@@ -518,7 +603,6 @@
 真题至少二刷
                             </div>
                         </li>
-                        
                     </ul>
                 </div>
                 
@@ -643,6 +727,7 @@ Milestone每周口语
         </section>       
         <div class="footer">
             <p>考研复习规划 | 科学备考，高效学习 | 成功上岸！</p>
+            <p>© 2025 考研复习指南 | 祝你一战成硕！</p>
         </div>
     </div>
 
@@ -666,6 +751,18 @@ Milestone每周口语
                     // 显示当前选择的内容区域
                     const subjectId = this.getAttribute('data-subject');
                     document.getElementById(subjectId).classList.add('active');
+                });
+            });
+            
+            // 添加卡片悬停效果增强
+            const cards = document.querySelectorAll('.phase-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
                 });
             });
         });
