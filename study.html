@@ -722,7 +722,7 @@
             color: #94a3b8;
         }
         
-        /* 考研倒计时样式 */
+        /* 考研倒计时样式 - 美化部分 */
         .exam-countdown {
             background: rgba(30, 41, 59, 0.6);
             border-radius: 12px;
@@ -732,18 +732,95 @@
             flex-direction: column;
             justify-content: center;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exam-countdown:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .exam-countdown::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(96, 165, 250, 0.1), rgba(59, 130, 246, 0.2));
+            z-index: -1;
         }
         
         .exam-countdown h3 {
             font-size: 18px;
             color: #60a5fa;
             margin-bottom: 15px;
+            text-shadow: 0 0 8px rgba(96, 165, 250, 0.3);
+        }
+        
+        .countdown-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
         }
         
         #exam-days {
+            font-size: 42px;
+            font-weight: 800;
+            color: #fbbf24;
+            text-shadow: 0 0 12px rgba(251, 191, 36, 0.5);
+            margin: 10px 0;
+            transition: all 0.5s ease;
+        }
+        
+        .countdown-label {
+            font-size: 16px;
+            color: #94a3b8;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+        
+        .countdown-progress {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #60a5fa, #8b5cf6);
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+        
+        .exam-date {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 15px;
+            padding: 8px 12px;
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .exam-icon {
             font-size: 36px;
-            font-weight: 700;
-            color: #60a5fa;
+            color: #fbbf24;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
         
         @media (max-width: 900px) {
@@ -787,6 +864,10 @@
             
             .daily-tasks-section {
                 grid-template-columns: 1fr;
+            }
+            
+            #exam-days {
+                font-size: 36px;
             }
         }
     </style>
@@ -936,10 +1017,18 @@
                 </div>
             </div>
             
-            <!-- 考研倒计时区域 -->
+            <!-- 考研倒计时区域 - 美化后 -->
             <div class="exam-countdown">
                 <h3>考研倒计时</h3>
-                <div id="exam-days">计算中...</div>
+                <div class="countdown-content">
+                    <i class="fas fa-graduation-cap exam-icon"></i>
+                    <div id="exam-days">计算中...</div>
+                    <div class="countdown-label">剩余天数</div>
+                    <div class="countdown-progress">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    <div class="exam-date">2025年12月20日</div>
+                </div>
             </div>
         </div>
         
@@ -1654,6 +1743,18 @@
                 }
                 const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
                 document.getElementById('exam-days').textContent = `${daysLeft} 天`;
+                
+                // 计算进度条（从考试日倒推一年作为起点）
+                const oneYearAgo = new Date(2024, 11, 20);
+                const totalDays = Math.ceil((examDate - oneYearAgo) / (1000 * 60 * 60 * 24));
+                const progress = Math.min(100, Math.max(0, 100 - (daysLeft / totalDays * 100)));
+                document.getElementById('progress-bar').style.width = `${progress}%`;
+                
+                // 添加动画效果
+                document.getElementById('exam-days').style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    document.getElementById('exam-days').style.transform = 'scale(1)';
+                }, 300);
             }
             
             // 显示通知
@@ -1699,7 +1800,9 @@
             renderTasks();
             renderDailyTasks();
             updateExamCountdown(); // 初始化考研倒计时
-            setInterval(updateExamCountdown, 1000 * 60 * 60 * 24); // 每天更新一次
+            
+            // 修改为每分钟更新一次倒计时
+            setInterval(updateExamCountdown, 1000 * 60); // 每分钟更新一次
             
             // 添加任务事件监听
             addTaskBtn.addEventListener('click', addTask);
