@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>考研复习规划 | 高效备考指南</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>考研复习规划 | 全面备考指南</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
         
         body {
@@ -22,7 +22,7 @@
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
         
@@ -30,247 +30,190 @@
             text-align: center;
             padding: 30px 0;
             margin-bottom: 30px;
+            background: linear-gradient(120deg, #1a2980, #26d0ce);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
         
-        h1 {
-            color: #2c3e50;
-            font-size: 2.5rem;
+        header h1 {
+            font-size: 2.8rem;
             margin-bottom: 10px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
         
-        .subtitle {
-            color: #7f8c8d;
+        header p {
             font-size: 1.2rem;
             max-width: 800px;
             margin: 0 auto;
+            opacity: 0.9;
         }
         
-        .controls {
+        .subject-nav {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 25px;
+            justify-content: center;
             flex-wrap: wrap;
             gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .subject-btn {
+            padding: 12px 25px;
             background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        
-        .search-box {
-            flex-grow: 1;
-            position: relative;
-            max-width: 500px;
-        }
-        
-        .search-box input {
-            width: 100%;
-            padding: 12px 20px 12px 45px;
-            border: 2px solid #e0e6ed;
-            border-radius: 30px;
-            font-size: 16px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
-        }
-        
-        .search-box input:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-        
-        .search-box i {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #95a5a6;
-        }
-        
-        .category-filter {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .category-btn {
-            padding: 8px 16px;
-            background: #f8f9fa;
-            border: 2px solid #e0e6ed;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
         
-        .category-btn:hover {
-            background: #e3f2fd;
-            border-color: #bbdefb;
+        .subject-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
         }
         
-        .category-btn.active {
-            background: #3498db;
+        .subject-btn.active {
+            background: #1a2980;
             color: white;
-            border-color: #3498db;
         }
         
-        .legend {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-        }
-        
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .subject-section {
             background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            margin-bottom: 40px;
-        }
-        
-        th, td {
-            padding: 16px 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        
-        thead {
-            background: #3498db;
-            color: white;
-        }
-        
-        thead th {
-            font-weight: 600;
-            text-align: center;
-            position: sticky;
-            top: 0;
-        }
-        
-        tbody tr {
-            transition: background 0.2s;
-        }
-        
-        tbody tr:hover {
-            background: #f8f9fa;
-        }
-        
-        .subject-header {
-            background: #2c3e50;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .subject-header i {
-            margin-right: 8px;
-            transition: transform 0.3s ease;
-        }
-        
-        .subject-header.collapsed i {
-            transform: rotate(-90deg);
-        }
-        
-        .math-row {
-            background: rgba(236, 240, 241, 0.5);
-        }
-        
-        .politics-row {
-            background: rgba(231, 245, 255, 0.7);
-        }
-        
-        .circuit-row {
-            background: rgba(232, 245, 233, 0.5);
-        }
-        
-        .english-row {
-            background: rgba(255, 243, 224, 0.5);
-        }
-        
-        .notes-row {
-            background: #fffde7;
-            font-style: italic;
-        }
-        
-        .phase-title {
-            font-weight: bold;
-            background: #f8f9fa;
-        }
-        
-        .highlight {
-            background-color: #fff9c4;
-            font-weight: 500;
-        }
-        
-        .collapsed-content {
-            display: table-row;
-        }
-        
-        .collapsed .collapsed-content {
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
             display: none;
         }
         
-        .icon-cell {
-            text-align: center;
-            font-size: 18px;
-            color: #3498db;
+        .subject-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
         }
         
-        .book-icon {
-            color: #e74c3c;
-            margin-right: 5px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .time-info {
-            background: #e3f2fd;
-            border-radius: 4px;
-            padding: 3px 8px;
-            font-size: 14px;
-            display: inline-block;
+        .subject-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f4f8;
+        }
+        
+        .subject-header i {
+            font-size: 2.2rem;
+            background: linear-gradient(120deg, #1a2980, #26d0ce);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subject-header h2 {
+            font-size: 2rem;
+            color: #1a2980;
+        }
+        
+        .phase-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .phase-card {
+            flex: 1;
+            min-width: 280px;
+            background: #f8fbfe;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            border-top: 4px solid #26d0ce;
+        }
+        
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .phase-card h3 {
+            color: #1a2980;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #d1e6fa;
+            font-size: 1.4rem;
+        }
+        
+        .resources-list {
+            list-style-type: none;
+        }
+        
+        .resources-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #edf2f7;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .resources-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .resources-list li i {
+            color: #26d0ce;
+            margin-right: 10px;
             margin-top: 5px;
-            font-weight: 500;
         }
         
-        footer {
+        .tips-card {
+            background: #e3f2fd;
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 4px solid #1a2980;
+            margin-top: 20px;
+        }
+        
+        .tips-card h3 {
+            color: #1a2980;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer {
             text-align: center;
-            padding: 30px 0;
-            color: #7f8c8d;
-            font-size: 0.9rem;
+            padding: 25px;
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 30px;
+            border-top: 1px solid #eaeaea;
         }
         
         @media (max-width: 768px) {
-            .controls {
-                flex-direction: column;
+            header h1 {
+                font-size: 2.2rem;
             }
             
-            .search-box {
-                max-width: 100%;
+            .subject-header h2 {
+                font-size: 1.6rem;
             }
             
-            table {
-                font-size: 14px;
+            .subject-btn {
+                padding: 10px 18px;
+                font-size: 0.9rem;
             }
             
-            th, td {
-                padding: 12px 8px;
+            .phase-card {
+                min-width: 100%;
             }
         }
     </style>
@@ -278,492 +221,452 @@
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-graduation-cap"></i> 考研复习规划表</h1>
-            <p class="subtitle">高效备考指南 | 数学 | 政治 | 专业课 | 英语 | 科学规划每一阶段</p>
+            <h1><i class="fas fa-graduation-cap"></i> 考研复习规划</h1>
+            <p>科学备考指南 | 高效复习方案 | 全面学习资源</p>
         </header>
         
-        <div class="controls">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="搜索科目、教材或关键词...">
-            </div>
-            
-            <div class="category-filter">
-                <button class="category-btn active" data-category="all">
-                    <i class="fas fa-layer-group"></i> 全部科目
-                </button>
-                <button class="category-btn" data-category="math">
-                    <i class="fas fa-calculator"></i> 数学
-                </button>
-                <button class="category-btn" data-category="politics">
-                    <i class="fas fa-landmark"></i> 政治
-                </button>
-                <button class="category-btn" data-category="circuit">
-                    <i class="fas fa-bolt"></i> 专业课
-                </button>
-                <button class="category-btn" data-category="english">
-                    <i class="fas fa-language"></i> 英语
-                </button>
-            </div>
-            
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #2c3e50;"></div>
-                    <span>科目</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(236, 240, 241, 0.5);"></div>
-                    <span>数学</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(231, 245, 255, 0.7);"></div>
-                    <span>政治</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(232, 245, 233, 0.5);"></div>
-                    <span>专业课</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(255, 243, 224, 0.5);"></div>
-                    <span>英语</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #fffde7;"></div>
-                    <span>注意事项</span>
-                </div>
-            </div>
+        <div class="subject-nav">
+            <button class="subject-btn active" data-subject="math">
+                <i class="fas fa-calculator"></i> 数学
+            </button>
+            <button class="subject-btn" data-subject="politics">
+                <i class="fas fa-landmark"></i> 政治
+            </button>
+            <button class="subject-btn" data-subject="major">
+                <i class="fas fa-book"></i> 专业课
+            </button>
+            <button class="subject-btn" data-subject="english">
+                <i class="fas fa-language"></i> 英语
+            </button>
         </div>
         
-        <table id="studyPlanTable">
-            <thead>
-                <tr>
-                    <th width="8%">科目</th>
-                    <th width="12%">基础</th>
-                    <th width="3%"></th>
-                    <th width="12%">基础习题集</th>
-                    <th width="5%"></th>
-                    <th width="10%">强化</th>
-                    <th width="3%"></th>
-                    <th width="12%">强化习题集</th>
-                    <th width="20%">冲刺</th>
-                    <th width="5%"></th>
-                    <th width="10%">时间安排</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 高数 -->
-                <tr class="subject-header" data-category="math">
-                    <td colspan="11">
-                        <i class="fas fa-calculator"></i> 高等数学
-                        <span style="float:right; font-size:14px; font-weight:normal;">点击展开/折叠</span>
-                    </td>
-                </tr>
-                <tr class="collapsed-content math-row">
-                    <td rowspan="2">高数</td>
-                    <td><i class="fas fa-book book-icon"></i> 张宇</td>
-                    <td></td>
-                    <td><i class="fas fa-book book-icon"></i> 李永乐《660》</td>
-                    <td></td>
-                    <td><i class="fas fa-book book-icon"></i> 武忠祥 ; 张宇</td>
-                    <td></td>
-                    <td>
-                        <i class="fas fa-book book-icon"></i> 李林《880》综合篇<br>
-                        <i class="fas fa-book book-icon"></i> 汤家凤《1800》基础篇，提高篇<br>
-                        <i class="fas fa-book book-icon"></i> 张宇《1000题》
-                    </td>
-                    <td>
-                        <i class="fas fa-book book-icon"></i> 李艳芳《真题》（数一二三）<br>
-                        <i class="fas fa-book book-icon"></i> 李林6套卷<br>
-                        <i class="fas fa-book book-icon"></i> 李林4套卷<br>
-                        <i class="fas fa-book book-icon"></i> 李林108<br>
-                        <i class="fas fa-book book-icon"></i> 张宇8<br>
-                        <i class="fas fa-book book-icon"></i> 张宇4<br>
-                        <i class="fas fa-book book-icon"></i> 李永乐6套卷
-                    </td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="collapsed-content math-row">
-                    <td><i class="fas fa-book book-icon"></i> 张宇《张宇基础30讲》</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td colspan="3">
-                        <i class="fas fa-book book-icon"></i> 武忠祥《高等数学辅导讲义》<br>
-                        <i class="fas fa-book book-icon"></i> 《武忠祥严选题》
-                    </td>
-                    <td>
-                        <i class="fas fa-book book-icon"></i> 李永乐3套卷<br>
-                        <i class="fas fa-book book-icon"></i> 余炳森5套卷<br>
-                        <i class="fas fa-book book-icon"></i> 李艳芳3套卷<br>
-                        <i class="fas fa-book book-icon"></i> 合工大超越卷5套
-                    </td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="collapsed-content notes-row">
-                    <td><i class="fas fa-info-circle"></i></td>
-                    <td colspan="2">高数、概率：学完一章写一章<br>线代：全学完再写题</td>
-                    <td colspan="2">习题集筛题：去掉真题部分，去掉不考部分<br>（先看一眼会不会做，思路如何）做潜考题</td>
-                    <td colspan="2">先挑一本进行，时间充足再扩展</td>
-                    <td colspan="2">不花时间整理错题，直接题上标注</td>
-                    <td colspan="2">卡时间2.5h做模拟题真题<br>李艳芳真题解析视频<br>108专练大题薄弱点</td>
-                </tr>
+        <!-- 数学部分 -->
+        <section id="math" class="subject-section active">
+            <div class="subject-header">
+                <i class="fas fa-calculator"></i>
+                <h2>数学复习规划</h2>
+            </div>
+            
+            <div class="phase-container">
+                <div class="phase-card">
+                    <h3>基础阶段</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <div>
+                                <strong>高数：</strong>张宇＋张宇《张宇基础30讲》
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <div>
+                                <strong>线代：</strong>汤家凤＋李永乐《线性代数辅导讲义》
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <div>
+                                <strong>概率：</strong>李良＋李良《概率论与数理统计基础强化一本通》
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-book"></i>
+                            <div>
+                                <strong>习题集：</strong>李永乐《660题》（高数）、李林《880》基础篇（线代、概率论）、大头切片《真题》（数123）
+《张宇300题》
+汤家凤《1800》入门篇
+杨超《139三大计算》
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 
-                <!-- 线代 -->
-                <tr class="subject-header" data-category="math">
-                    <td colspan="11">
-                        <i class="fas fa-project-diagram"></i> 线性代数
-                        <span style="float:right; font-size:14px; font-weight:normal;">点击展开/折叠</span>
-                    </td>
-                </tr>
-                <tr class="collapsed-content math-row">
-                    <td>线代</td>
-                    <td><i class="fas fa-book book-icon"></i> 汤家凤</td>
-                    <td></td>
-                    <td><i class="fas fa-book book-icon"></i> 李林《880》基础篇</td>
-                    <td></td>
-                    <td><i class="fas fa-book book-icon"></i> 李永乐</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="collapsed-content math-row">
-                    <td></td>
-                    <td><i class="fas fa-book book-icon"></i> 李永乐《线性代数辅导讲义》</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td colspan="3">
-                        <i class="fas fa-book book-icon"></i> 李永乐《线性代数辅导讲义》<br>
-                        <i class="fas fa-book book-icon"></i> 张宇《张宇线代9讲》<br>
-                        <i class="fas fa-book book-icon"></i> 李林《李林线代辅导讲义》
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <div class="phase-card">
+                    <h3>强化阶段</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <div>
+                                <strong>高数：</strong>武忠祥《高等数学辅导讲义》+《严选题》
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <div>
+                                <strong>线代：</strong>李永乐《线性代数辅导讲义》＋《张宇线代9讲》
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <div>
+                                <strong>概率：</strong>方浩《考研数学通关教程（蓝皮书）》
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-book"></i>
+                            <div>
+                                <strong>习题集：</strong>李林《880》综合篇、汤家凤《1800》基础篇，提高篇
+张宇《1000题》
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 
-                <!-- 概率 -->
-                <tr class="subject-header" data-category="math">
-                    <td colspan="11">
-                        <i class="fas fa-chart-pie"></i> 概率论
-                        <span style="float:right; font-size:14px; font-weight:normal;">点击展开/折叠</span>
-                    </td>
-                </tr>
-                <tr class="collapsed-content math-row">
-                    <td>概率</td>
-                    <td><i class="fas fa-book book-icon"></i> 李良</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><i class="fas fa-book book-icon"></i> 方浩</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="collapsed-content math-row">
-                    <td></td>
-                    <td><i class="fas fa-book book-icon"></i> 李良《概率论与数理统计基础强化一本通》</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td colspan="3"><i class="fas fa-book book-icon"></i> 考研数学通关教程（方浩蓝皮书）</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                
-                <!-- 政治 -->
-                <tr class="subject-header" data-category="politics">
-                    <td colspan="11">
-                        <i class="fas fa-landmark"></i> 政治
-                        <span style="float:right; font-size:14px; font-weight:normal;">点击展开/折叠</span>
-                    </td>
-                </tr>
-                <tr class="collapsed-content politics-row">
-                    <td rowspan="2">政治</td>
-                    <td><i class="fas fa-video"></i> 徐涛强化班</td>
-                    <td></td>
-                    <td>
-                        <i class="fas fa-book book-icon"></i> 《肖1000》题<br>
-                        <i class="fas fa-book book-icon"></i> 《徐涛优题库》<br>
-                        <i class="fas fa-mobile-alt"></i> "研力刷题"小程序<br>
-                        <i class="fas fa-file-alt"></i> 真题
-                    </td>
-                    <td></td>
-                    <td>
-                        <i class="fas fa-book book-icon"></i> 强化班课程笔记<br>
-                        <i class="fas fa-book book-icon"></i> 《肖背诵手册》<br>
-                        <i class="fas fa-book book-icon"></i> 习题册错题本
-                    </td>
-                    <td></td>
-                    <td>
-                        <strong>选择：</strong><br>
-                        <i class="fas fa-book book-icon"></i> 《1000》题错题本背诵<br>
-                        <i class="fas fa-book book-icon"></i> 《肖八》选择题背诵<br>
-                        ＋腿4徐6米6<br>
-                        <strong>分析题：</strong><br>
-                        <i class="fas fa-book book-icon"></i> 《肖四》分析题背诵＋其他
-                    </td>
-                    <td>
-                        <i class="fas fa-book book-icon"></i> 马原：123章节<br>
-                        <i class="fas fa-book book-icon"></i> 史纲：246章节<br>
-                        <i class="fas fa-book book-icon"></i> 毛中特：26章节<br>
-                        <i class="fas fa-book book-icon"></i> 思修：24章节<br>
-                        <i class="fas fa-book book-icon"></i> 习思想：不好划<br>
-                        <i class="fas fa-video"></i> 考研热词课程
-                    </td>
-                    <td></td>
-                    <td>
-                        <span class="time-info">单选、多选&lt;45min</span><br>
-                        <span class="time-info">主观题&lt;25min/道</span><br>
-                        <span class="time-info">7月份开始</span>
-                    </td>
-                </tr>
-                <tr class="collapsed-content notes-row">
-                    <td><i class="fas fa-info-circle"></i></td>
-                    <td colspan="2">
-                        马原、习思想难度高，先看课再做题<br>
-                        史纲、思修、毛中特简单，直接看教材刷题<br>
-                        马原->思修->史纲->毛中特->习思想<br>
-                        马原各种原理需要重视
-                    </td>
-                    <td colspan="2">
-                        <i class="fas fa-book book-icon"></i> 《精讲精练》在刷《肖1000》时候当做答案来用<br>
-                        <i class="fas fa-clipboard-list"></i> 整理错题本<br>
-                        <i class="fas fa-highlighter"></i> 错题对应知识点在教材中标出，重点记忆<br>
-                        <i class="fas fa-mobile-alt"></i> 小程序二刷《肖1000》
-                    </td>
-                    <td colspan="2">
-                        <i class="fas fa-book book-icon"></i> 《肖背诵手册》厚的多看多翻，薄的必背<br>
-                        <i class="fas fa-redo"></i> 《肖1000题》二刷三刷，重点错题
-                    </td>
-                    <td colspan="3">
-                        <i class="fas fa-book book-icon"></i> 《肖八》选择题题干选项考点等都要看<br>
-                        <i class="fas fa-eye"></i> 分析题看看就行，多看马原大题，判断考察角度<br>
-                        <i class="fas fa-book book-icon"></i> 《肖四》分析题背熟背透<br>
-                        <i class="fas fa-stopwatch"></i> 选择题做一遍45min<br>
-                        <i class="fas fa-newspaper"></i> 多关注时政内容<br>
-                        <i class="fas fa-user-graduate"></i> "空卡"时政总结带背
-                    </td>
-                </tr>
-                
-                <!-- 电路与信号 -->
-                <tr class="subject-header" data-category="circuit">
-                    <td colspan="11">
-                        <i class="fas fa-bolt"></i> 专业课（电路与信号）
-                        <span style="float:right; font-size:14px; font-weight:normal;">点击展开/折叠</span>
-                    </td>
-                </tr>
-                <tr class="collapsed-content circuit-row">
-                    <td>电路</td>
-                    <td><i class="fas fa-book book-icon"></i> 西电版</td>
-                    <td></td>
-                    <td>
-                        <i class="fas fa-book book-icon"></i> 《电路、信号与系统考试辅导》<br>
-                        <i class="fas fa-book book-icon"></i> 课本课后题节选<br>
-                        <i class="fas fa-book book-icon"></i> 西电习题册<br>
-                        <i class="fas fa-book book-icon"></i> 信号135题<br>
-                        <i class="fas fa-file-alt"></i> 西电期末题<br>
-                        <i class="fas fa-file-alt"></i> 真题
-                    </td>
-                    <td></td>
-                    <td><i class="fas fa-video"></i> 研学社冲刺班课程</td>
-                    <td></td>
-                    <td>
-                        <i class="fas fa-file-alt"></i> 晋城考研模拟题<br>
-                        <i class="fas fa-file-alt"></i> 研学社模拟题等
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="collapsed-content circuit-row">
-                    <td>信号</td>
-                    <td><i class="fas fa-book book-icon"></i> 王松林版</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="collapsed-content notes-row">
-                    <td><i class="fas fa-info-circle"></i></td>
-                    <td colspan="3">
-                        <i class="fas fa-lightbulb"></i> 注意课本和课程中的例题<br>
-                        <i class="fas fa-list-ol"></i> 先做例题再看解析<br>
-                        <i class="fas fa-step-forward"></i> 视频看完后做课后重点题<br>
-                        <i class="fas fa-calculator"></i> 然后习题册上对应的题<br>
-                        <i class="fas fa-superscript"></i> 留意公式推倒、理解记忆为主
-                    </td>
-                    <td colspan="3">
-                        <i class="fas fa-file-alt"></i> 真题811、821都做<br>
-                        <i class="fas fa-file-alt"></i> 别的学校的也做做<br>
-                        <i class="fas fa-redo"></i> 真题至少二刷
-                    </td>
-                    <td colspan="2">
-                        <i class="fas fa-book book-icon"></i> 讲义、模拟题不错
-                    </td>
-                    <td colspan="2">
-                        <i class="fas fa-search"></i> 多找资源机构模拟题
-                    </td>
-                </tr>
-                
-                <!-- 英语 -->
-                <tr class="subject-header" data-category="english">
-                    <td colspan="11">
-                        <i class="fas fa-language"></i> 英语
-                        <span style="float:right; font-size:14px; font-weight:normal;">点击展开/折叠</span>
-                    </td>
-                </tr>
-                <tr class="collapsed-content english-row">
-                    <td rowspan="2">英语</td>
-                    <td>
-                        <i class="fas fa-pen-alt"></i> 田静长难句<br>
-                        <i class="fas fa-file-alt"></i> 真题切片每日一练<br>
-                        <i class="fas fa-book"></i> 墨墨背单词
-                    </td>
-                    <td></td>
-                    <td>
-                        <strong>阅读：</strong> 唐迟/颉斌斌<br>
-                        <strong>新题型：</strong> 刘琦<br>
-                        <strong>翻译：</strong> 唐静<br>
-                        <strong>完形填空：</strong> 易锡人
-                    </td>
-                    <td></td>
-                    <td>
-                        <i class="fas fa-edit"></i> 公式模板<br>
-                        <i class="fas fa-quote-right"></i> 经典例句背诵
-                    </td>
-                    <td></td>
-                    <td>
-                        <i class="fas fa-book"></i> 专业词汇、重点词汇、政法类等<br>
-                        <i class="fas fa-book"></i> 墨墨背单词<br>
-                        <i class="fas fa-exchange-alt"></i> 熟词新意<br>
-                        <i class="fas fa-link"></i> 固定搭配
-                    </td>
-                    <td>
-                        <i class="fas fa-file-alt"></i> 真题（英12）<br>
-                        <i class="fas fa-stopwatch"></i> 考前模拟（近三年）<br>
-                        <i class="fas fa-tasks"></i> 模块专项训练<br>
-                        <i class="fas fa-microphone-alt"></i> Milestone每周口语
-                    </td>
-                    <td></td>
-                    <td>
-                        <span class="time-info">1月开始</span><br>
-                        <span class="time-info">大小作文&lt;60min</span><br>
-                        <span class="time-info">四篇阅读&lt;80min</span><br>
-                        <span class="time-info">新题型&lt;20min</span><br>
-                        <span class="time-info">翻译&lt;10min</span><br>
-                        <span class="time-info">完型&lt;10min</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                <div class="phase-card">
+                    <h3>冲刺阶段</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-book"></i>
+                            <div>
+                                <strong>真题：</strong>李艳芳《真题》（数一二三）
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-file-alt"></i>
+                            <div>
+                                <strong>模拟卷：</strong>李林6套卷 + 4套卷 + 108
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-file-alt"></i>
+                            <div>
+                                <strong>其他资源：</strong>张宇8+4、合工大超越卷5套、余炳森5套卷
+李艳芳3套卷、李永乐6＋3
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tips-card">
+                <h3><i class="fas fa-lightbulb"></i> 复习建议</h3>
+                <ul class="resources-list">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <div>高数、概率：学完一章写一章习题；线代：全学完再写题</div>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <div>习题集筛题：去掉真题部分和不考内容，重点做潜考题</div>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <div>强化阶段先专注一本习题集，时间充足再扩展</div>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <div>冲刺阶段卡时间2.5小时做模拟题和真题</div>
+                    </li>
+                </ul>
+            </div>
+        </section>
         
-        <footer>
-            <p>考研复习规划表 &copy; 2023 | 科学备考，高效学习 | 建议根据个人情况调整计划</p>
-            <p>提示：点击科目标题可以展开/折叠详细内容，使用搜索功能快速定位信息</p>
-        </footer>
+        <!-- 政治部分 -->
+        <section id="politics" class="subject-section">
+            <div class="subject-header">
+                <i class="fas fa-landmark"></i>
+                <h2>政治复习规划</h2>
+            </div>
+            
+            <div class="phase-container">
+                <div class="phase-card">
+                    <h3>课程</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <div>
+                                <strong>课程：</strong>徐涛强化班
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-book"></i>
+                            <div>
+                                <strong>注意事项：</strong>马原、习思想难度高，先看课再做题
+史纲、思修、毛中特简单，直接看教材刷题
+马原->思修->史纲->毛中特->习思想
+马原各种原理需要重视
+听完课不要直接做题，回头再翻一下教材
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-book-open"></i>
+                            <div>
+                                <strong>课本重点与拓展：</strong>马原：123章节
+史纲：246章节
+毛中特：26章节
+思修：24章节
+习思想：不好划
+考研热词课程
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="phase-card">
+                    <h3>习题册</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-book"></i>
+                            <div>
+                                <strong>习题集：</strong>《肖1000》题
+《徐涛优题库》
+“研力刷题”小程序
+真题
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-sync-alt"></i>
+                            <div>
+                                <strong>错题本：</strong>重点整理与复习
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-book-open"></i>
+                            <div>
+                                <strong>注意事项：</strong>《精讲精练》在刷《肖1000》时候当做答案来用
+整理错题本
+错题对应知识点在教材中标出，重点记忆
+小程序二刷《肖1000》
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="phase-card">
+                    <h3>押题</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-file-alt"></i>
+                            <div>
+                                <strong>选择：</strong>《1000》题错题本背诵
+《肖八》选择题背诵
+＋腿4徐6米6
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-file-alt"></i>
+                            <div>
+                                <strong>分析题：</strong>《肖四》分析题背诵
+＋其他
+                            </div>
+                        </li>
+                        /li>
+                        <li>
+                            <i class="fas fa-bullhorn"></i>
+                            <div>
+                                <strong>注意事项：</strong>《肖八》选择题题干选项考点等都要看。分析题看看就行，多看马原大题，判断考察角度	
+《肖四》分析题背熟背透。选择题做一遍45min，多关注时政内容。多注意答案的话术语料。25min一道大题
+“空卡”时政总结带背
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>            
+        </section>
+        
+        <!-- 专业课部分 -->
+        <section id="major" class="subject-section">
+            <div class="subject-header">
+                <i class="fas fa-book"></i>
+                <h2>专业课复习规划</h2>
+            </div>
+            
+            <div class="phase-container">
+                <div class="phase-card">
+                    <h3>课程</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-book"></i>
+                            <div>
+                                <strong>电路：</strong>西电版
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-book-open"></i>
+                            <div>
+                                <strong>信号：</strong>王松林版
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-pen-fancy"></i>
+                            <div>
+                                <strong>注意事项：</strong>注意课本和课程中的例题，先做例题再看解析。视频看完后做课后重点题，然后习题册上对应的题
+留意公式推倒、理解记忆为主
+                            </div>
+                        </li>
+                </div>
+                
+                <div class="phase-card">
+                    <h3>习题册</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-book"></i>
+                            <div>
+                                <strong>习题集：</strong>《电路、信号与系统考试辅导》
+课本课后题节选
+西电习题册
+信号135题
+西电期末题
+真题
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-book-open"></i>
+                            <div>
+                                <strong>注意事项：</strong>真题811、821都做
+别的学校的也做做
+真题至少二刷
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="phase-card">
+                    <h3>冲刺阶段</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <div>
+                                <strong>课程：</strong>研学社冲刺班课程
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-file-alt"></i>
+                            <div>
+                                <strong>模拟题：</strong>晋城考研模拟题 + 研学社模拟题
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-globe"></i>
+                            <div>
+                                <strong>拓展：</strong>其他学校真题练习
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 英语部分 -->
+        <section id="english" class="subject-section">
+            <div class="subject-header">
+                <i class="fas fa-language"></i>
+                <h2>英语复习规划</h2>
+            </div>
+            
+            <div class="phase-container">
+                <div class="phase-card">
+                    <h3>每日一练</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-pen"></i>
+                            <div>
+                                <strong>每日一练：</strong>田静长难句
+真题切片每日一练
+墨墨背单词
+                            </div>
+                        </li>                        
+                    </ul>
+                </div>
+                
+                <div class="phase-card">
+                    <h3>课程</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-search"></i>
+                            <div>
+                                <strong>阅读：</strong>唐迟/颉斌斌课程
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-list-ol"></i>
+                            <div>
+                                <strong>新题型：</strong>刘琦课程
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-exchange-alt"></i>
+                            <div>
+                                <strong>翻译：</strong>唐静课程
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-square"></i>
+                            <div>
+                                <strong>完形填空：</strong>易锡人课程
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="phase-card">
+                    <h3>写作与冲刺</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-pencil-alt"></i>
+                            <div>
+                                <strong>作文：</strong>公式模板 + 经典例句背诵
+                            </div>
+                        </li>                        
+                    </ul>
+                </div>
+				<div class="phase-card">
+                    <h3>词汇搭配</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <i class="fas fa-search"></i>
+                            <div>
+                                <strong>词汇搭配：</strong>专业词汇、重点词汇、政法类等
+墨墨背单词
+熟词新意
+固定搭配
+                            </div>
+                        </li>                        
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tips-card">
+                <h3><i class="fas fa-lightbulb"></i> 模拟训练</h3>
+                <ul class="resources-list">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <div>真题（英12）
+考前模拟（近三年）
+模块专项训练
+Milestone每周口语
+                    </li>
+                </ul>
+            </div>
+        </section>
+        
+        <div class="footer">
+            <p>考研复习规划 | 科学备考，高效学习 | 成功上岸！</p>
+        </div>
     </div>
 
     <script>
-        // 科目折叠功能
-        document.querySelectorAll('.subject-header').forEach(header => {
-            header.addEventListener('click', () => {
-                header.classList.toggle('collapsed');
-                
-                // 获取该科目下的所有行
-                let nextRow = header.nextElementSibling;
-                while (nextRow && nextRow.classList.contains('collapsed-content')) {
-                    nextRow.classList.toggle('hidden-row');
-                    nextRow = nextRow.nextElementSibling;
-                }
-            });
-        });
-        
-        // 分类过滤功能
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                // 更新按钮状态
-                document.querySelectorAll('.category-btn').forEach(b => {
-                    b.classList.remove('active');
-                });
-                btn.classList.add('active');
-                
-                const category = btn.getAttribute('data-category');
-                
-                // 显示/隐藏行
-                document.querySelectorAll('tbody tr').forEach(row => {
-                    if (category === 'all') {
-                        row.style.display = '';
-                    } else if (row.classList.contains('subject-header')) {
-                        const rowCategory = row.getAttribute('data-category');
-                        if (rowCategory === category) {
-                            row.style.display = '';
-                            // 展开该科目
-                            row.classList.remove('collapsed');
-                            let nextRow = row.nextElementSibling;
-                            while (nextRow && nextRow.classList.contains('collapsed-content')) {
-                                nextRow.style.display = '';
-                                nextRow = nextRow.nextElementSibling;
-                            }
-                        } else {
-                            row.style.display = 'none';
-                            // 隐藏该科目下的所有行
-                            let nextRow = row.nextElementSibling;
-                            while (nextRow && nextRow.classList.contains('collapsed-content')) {
-                                nextRow.style.display = 'none';
-                                nextRow = nextRow.nextElementSibling;
-                            }
-                        }
-                    }
-                });
-            });
-        });
-        
-        // 搜索功能
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
+        document.addEventListener('DOMContentLoaded', function() {
+            const subjectBtns = document.querySelectorAll('.subject-btn');
+            const subjectSections = document.querySelectorAll('.subject-section');
             
-            document.querySelectorAll('tbody tr').forEach(row => {
-                // 跳过标题行
-                if (row.classList.contains('subject-header')) return;
-                
-                let rowText = '';
-                row.querySelectorAll('td').forEach(td => {
-                    rowText += td.textContent.toLowerCase() + ' ';
+            subjectBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    subjectBtns.forEach(b => b.classList.remove('active'));
+                    // 添加当前按钮的active类
+                    this.classList.add('active');
+                    
+                    // 隐藏所有内容区域
+                    subjectSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // 显示当前选择的内容区域
+                    const subjectId = this.getAttribute('data-subject');
+                    document.getElementById(subjectId).classList.add('active');
                 });
-                
-                if (rowText.includes(searchTerm)) {
-                    row.style.display = '';
-                    // 确保所属科目是展开的
-                    let prevRow = row.previousElementSibling;
-                    while (prevRow && !prevRow.classList.contains('subject-header')) {
-                        prevRow = prevRow.previousElementSibling;
-                    }
-                    if (prevRow && prevRow.classList.contains('subject-header')) {
-                        prevRow.classList.remove('collapsed');
-                        prevRow.style.display = '';
-                        // 显示该科目下的所有行
-                        let nextRow = prevRow.nextElementSibling;
-                        while (nextRow && nextRow.classList.contains('collapsed-content')) {
-                            nextRow.style.display = '';
-                            nextRow = nextRow.nextElementSibling;
-                        }
-                    }
-                } else {
-                    row.style.display = 'none';
-                }
             });
         });
     </script>
